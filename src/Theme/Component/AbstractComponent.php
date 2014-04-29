@@ -9,7 +9,7 @@
 
 namespace Blogwerk\Theme\Component;
 
-use Blogwerk\Theme\AbstractWordPressTheme;
+use Blogwerk\Theme\AbstractTheme;
 use Blogwerk\Util\WordPress;
 use \WP_Rewrite;
 
@@ -27,16 +27,16 @@ use \WP_Rewrite;
 abstract class AbstractComponent
 {
   /**
-   * @var AbstractWordPressTheme the theme instance
+   * @var AbstractTheme the theme instance
    */
   protected $theme;
 
   /**
    * Creates the Component and registers the init() call at action "init"
    *
-   * @param AbstractWordPressTheme $theme the theme
+   * @param AbstractTheme $theme the theme
    */
-  public function __construct(AbstractWordPressTheme $theme)
+  public function __construct(AbstractTheme $theme)
   {
     $this->theme = $theme;
     add_action('init', array($this, 'init'));
@@ -184,7 +184,7 @@ abstract class AbstractComponent
   }
 
   /**
-   * @return \Blogwerk\Theme\AbstractWordPressTheme
+   * @return \Blogwerk\Theme\AbstractTheme
    */
   public function getTheme()
   {
