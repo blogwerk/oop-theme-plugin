@@ -108,7 +108,12 @@ abstract class AbstractTheme
 
     // Set the reference to get the theme object from a static scope
     self::$instance = $this;
+  }
 
+  /**
+   * register the callbacks after being instantiated
+   */
+  public function register(){
     // register setup callbacks
     add_action('after_setup_theme', array($this, 'internalSetup'), 0);
     add_action('after_setup_theme', array($this, 'setup'), 0);
