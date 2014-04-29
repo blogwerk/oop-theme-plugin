@@ -1,0 +1,32 @@
+{
+  "name": "blogwerk/oop-theme-plugin",
+
+  "type": "wordpress-plugin",
+
+  "authors": [
+    {
+      "name": "Michael Sebel",
+      "email": "michael.sebel@blogwerk.com"
+    },
+    {
+      "name": "Tom Forrer",
+      "email": "tom.forrer@blogwerk.com"
+    }
+  ],
+  "homepage": "http://github.com/blogwerk/oop-theme-plugin",
+  "description": "",
+  "keywords": ["object-oriented", "wordpress", "theme"],
+
+  "require": {
+    "composer/installers": "~1.0",
+    "php": ">=5.4",
+    "johnpbloch/wordpress-core-installer": "~0.1"
+  },
+
+
+  "autoload": {
+    "psr-0": {
+      "Blogwerk": "src/"
+    }
+  }
+}
