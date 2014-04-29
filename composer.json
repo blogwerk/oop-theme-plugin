@@ -15,18 +15,18 @@
   ],
   "homepage": "http://github.com/blogwerk/oop-theme-plugin",
   "description": "",
-  "keywords": ["object-oriented", "wordpress", "theme"],
+  "keywords": ["object-oriented", "wordpress", "plugin"],
 
   "require": {
-    "composer/installers": "~1.0",
     "php": ">=5.4",
+    "composer/installers": "~1.0",
+    "johnpbloch/wordpress": "~3.9",
     "johnpbloch/wordpress-core-installer": "~0.1"
   },
 
-
   "autoload": {
-    "psr-0": {
-      "Blogwerk": "src/"
+    "psr-4": {
+      "Blogwerk\\": "src/"
     }
   }
 }
