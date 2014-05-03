@@ -8,6 +8,10 @@
 
 namespace Blogwerk\Theme;
 
+use Blogwerk\Theme\ServiceContainer;
+use Blogwerk\Theme\Component\AbstractComponent;
+use Blogwerk\Twig\ComponentProxy;
+use Blogwerk\Util\String;
 use \WP_Theme;
 use \WP_Error;
 use \WP_Query;
@@ -20,7 +24,6 @@ use \WP_Query;
  */
 abstract class AbstractTheme
 {
-
   /**
    * @var array list af all registered views
    */
@@ -82,9 +85,9 @@ abstract class AbstractTheme
   protected $components = array();
 
   /**
-   * @var WordPressWrapper|null
+   * @var ServiceContainer
    */
-  protected $dependencyWrapper = null;
+  protected $services;
 
   /**
    * @var WP_Query $backupQuery
@@ -99,12 +102,9 @@ abstract class AbstractTheme
    * Adds some basic filters for our "own" template loader and makes
    * sure the setup/init/assets functions are called
    */
-  public function __construct(WordPressWrapper $wrapper = null)
+  public function __construct(ServiceContainer $container=null)
   {
-    if ($wrapper == null) {
-      $wrapper = new WordPressWrapper();
-    }
-    $this->dependencyWrapper = $wrapper;
+    $this->services = $container;
 
     // Set the reference to get the theme object from a static scope
     self::$instance = $this;
@@ -126,6 +126,12 @@ abstract class AbstractTheme
    */
   public function internalSetup()
   {
+    $this->services[ServiceContainer::THEME] = $this;
+    $this->services->extend(ServiceContainer::TWIG_PROXIES, function($proxies, $c){
+      $proxies['component'] = new ComponentProxy($c[ServiceContainer::THEME]);
+      return $proxies;
+    });
+
     $this->wordpressTheme = wp_get_theme();
     $this->textDomain = $this->wordpressTheme->get('TextDomain');
     $this->slug = $this->wordpressTheme->get_stylesheet();
@@ -135,6 +141,13 @@ abstract class AbstractTheme
     $this->path = trailingslashit(get_template_directory());
     $this->childUri = trailingslashit(get_stylesheet_directory_uri());
     $this->childPath = trailingslashit(get_stylesheet_directory());
+
+    if($this->path != $this->childPath){
+      $this->services[ServiceContainer::PATH] = array($this->path, $this->childPath);
+    }else{
+      $this->services[ServiceContainer::PATH] = $this->path;
+    }
+
 
     load_theme_textdomain($this->textDomain, $this->path . 'resources/languages');
 
@@ -276,7 +289,7 @@ abstract class AbstractTheme
     } else {
       // Search for the component
       foreach ($this->components as $componentName => $component) {
-        if (String::ends_with($componentName, $namespacedClassName)) {
+        if (String::endsWith($componentName, $namespacedClassName)) {
           return $component;
         }
       }
@@ -559,7 +572,7 @@ abstract class AbstractTheme
    */
   public function backupQuery()
   {
-    $this->backupQuery = clone $this->getDependencyWrapper()->getQuery();
+    $this->backupQuery = clone $this->getService(ServiceContainer::WORDPRESS_GLOBALS)->getQuery();
   }
 
   /**
@@ -569,7 +582,7 @@ abstract class AbstractTheme
   {
     if (is_object($this->backupQuery)) {
       $query = clone $this->backupQuery;
-      $this->getDependencyWrapper()->setQuery($query);
+      $this->getService(ServiceContainer::WORDPRESS_GLOBALS)->setQuery($query);
       $this->backupQuery = null;
     }
   }
@@ -589,7 +602,7 @@ abstract class AbstractTheme
   }
 
   /**
-   * @return AbstractWordPressTheme
+   * @return AbstractTheme
    */
   public static function getInstance()
   {
@@ -674,7 +687,7 @@ abstract class AbstractTheme
   /**
    * Getter
    *
-   * @return \WP_Theme
+   * @return WP_Theme
    */
   public function getWordpressTheme()
   {
@@ -702,10 +715,18 @@ abstract class AbstractTheme
   }
 
   /**
-   * @return \Blogwerk\Theme\WordPressWrapper
+   * @return ServiceContainer
    */
-  public function getDependencyWrapper()
+  public function getServices()
   {
-    return $this->dependencyWrapper;
+    return $this->services;
   }
-} 
+
+  /**
+   * @param $service
+   * @return mixed
+   */
+  public function getService($service){
+    return $this->services[$service];
+  }
+}
