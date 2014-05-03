@@ -19,9 +19,6 @@
 
   "require": {
     "php": ">=5.4",
-    "composer/installers": "~1.0",
-    "johnpbloch/wordpress": "~3.9",
-    "johnpbloch/wordpress-core-installer": "~0.1",
     "pimple/pimple": "~1.0",
     "twig/twig": "1.*"
   },
