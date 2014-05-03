@@ -1,9 +1,5 @@
 <?php
 /**
- * Class WordPressWrapper
- *
- * This wrapper provides a wrapper to global objects of the WordPress Core.
- *
  * @category Blogwerk
  * @package Blogwerk_Theme
  * @author Tom Forrer <tom.forrer@blogwerk.com
@@ -25,7 +21,7 @@ use \WP_Styles;
 use \WP_Widget_Factory;
 
 /**
- * Class SocialMediaKitWrapper
+ * Class WordPressGlobalsWrapper
  *
  * This wrapper provides a wrapper to global objects of the WordPress Core.
  *
@@ -34,217 +30,131 @@ use \WP_Widget_Factory;
  * @author Tom Forrer <tom.forrer@blogwerk.com
  * @copyright Copyright (c) 2014 Blogwerk AG (http://blogwerk.com)
  */
-class WordPressWrapper
+class WordPressGlobalsWrapper
 {
 
   /**
-   * @var WP $wp
-   */
-  protected $wp;
-
-  /**
-   * @var WP_Query $query
-   */
-  protected $query;
-
-  /**
-   * @var WP_Admin_Bar $query
-   */
-  protected $adminBar;
-
-  /**
-   * @var WP_Object_Cache $objectCache
-   */
-  protected $objectCache;
-
-  /**
-   * @var string $pagenow
-   */
-  protected $pagenow;
-
-  /**
-   * @var string $typenow
-   */
-  protected $typenow;
-
-  /**
-   * @var wpdb $db
-   */
-  protected $db;
-
-  /**
-   * @var WP_Rewrite $rewrite
-   */
-  protected $rewrite;
-
-  /**
-   * @var WP_Roles $roles
-   */
-  protected $roles;
-
-  /**
-   * @var mixed $userRoles
-   */
-  protected $userRoles;
-
-  /**
-   * @var WP_Post|null $post
-   */
-  protected $post;
-
-  /**
-   * @var array|bool|null|object $comment
-   */
-  protected $comment;
-
-  /**
-   * @var array $comments
-   */
-  protected $comments;
-
-  /**
-   * @var array $menu
-   */
-  protected $menu;
-
-  /**
-   * @var array $subMenu
-   */
-  protected $subMenu;
-
-  /**
-   * @var string $subMenuFile
-   */
-  protected $subMenuFile;
-
-  /**
-   * @var WP_Widget_Factory $widetFactory
-   */
-  protected $widgetFactory;
-
-  /**
-   * Helper function, if no Multilang Plugin is loaded
+   * Getter for global $wp
    *
-   * @return array
-   */
-  public function getAllLanguages()
-  {
-    return array('de');
-  }
-
-  /**
    * @return WP
    */
   public function getWp()
   {
     global $wp;
-    $this->wp = $wp;
-    return $this->wp;
+    return $wp;
   }
 
   /**
-   * Getter
+   * Getter for global $wp_query
    *
    * @return object|WP_Query
    */
   public function getQuery()
   {
     global $wp_query;
-    $this->query = $wp_query;
     return $wp_query;
   }
 
   /**
-   * Setter
+   * Setter for global $wp_query
    *
    * @param WP_Query $query
    */
   public function setQuery($query){
     global $wp_query;
     $wp_query = $query;
-    $this->query = $wp_query;
   }
 
   /**
+   * Getter for global $wp_admin_bar
+   *
    * @return null|WP_Admin_Bar
    */
   public function getAdminBar()
   {
     global $wp_admin_bar;
-    $this->adminBar = $wp_admin_bar;
     return $wp_admin_bar;
   }
 
   /**
+   * Getter for global $wp_object_cache
+   *
    * @return WP_Object_Cache
    */
   public function getObjectCache()
   {
     global $wp_object_cache;
-    $this->objectCache = $wp_object_cache;
     return $wp_object_cache;
   }
 
   /**
+   * Getter for global $pagenow
+   *
    * @return string
    */
   public function getPageNow()
   {
     global $pagenow;
-    $this->pagenow = $pagenow;
     return $pagenow;
   }
   /**
+   * Getter for global $typenow
+   *
    * @return string
    */
   public function getTypeNow()
   {
     global $typenow;
-    $this->typenow = $typenow;
     return $typenow;
   }
 
   /**
+   * Getter for global $wpdb
+   *
    * @return wpdb
    */
   public function getDb()
   {
     global $wpdb;
-    $this->db = $wpdb;;
     return $wpdb;
   }
 
   /**
+   * Getter for global $wp_rewrite
+   *
    * @return WP_Rewrite
    */
   public function getRewrite()
   {
     global $wp_rewrite;
-    $this->rewrite = $wp_rewrite;
     return $wp_rewrite;
   }
 
   /**
+   * Getter for global $wp_roles
+   *
    * @return WP_Roles
    */
   public function getRoles()
   {
     global $wp_roles;
-    $this->roles = $wp_roles;
     return $wp_roles;
   }
 
   /**
+   * Getter for global $wp_user_roles
+   *
    * @return mixed
    */
   public function getUserRoles()
   {
     global $wp_user_roles;
-    $this->userRoles = $wp_user_roles;
     return $wp_user_roles;
   }
 
   /**
+   * Getter for global $wp_version
+   *
    * @return string
    */
   public function getVersion()
@@ -254,36 +164,41 @@ class WordPressWrapper
   }
 
   /**
+   * Getter for global $post
+   *
    * @return null|WP_Post
    */
   public function getPost()
   {
     global $post;
-    $this->post = $post;
     return $post;
   }
 
   /**
+   * Getter for global $comment
+   *
    * @return array|bool|null|object
    */
   public function getComment()
   {
     global $comment;
-    $this->comment = $comment;
     return $comment;
   }
 
   /**
+   * Getter for global $comments
+   *
    * @return array
    */
   public function getComments()
   {
     global $comments;
-    $this->comments = $comments;
     return $comments;
   }
 
   /**
+   * Getter for global $custom_image_header
+   *
    * @return mixed
    */
   public function getCustomImageHeader()
@@ -293,6 +208,8 @@ class WordPressWrapper
   }
 
   /**
+   * Getter for global $shortcode_tags
+   *
    * @return array
    */
   public function getShortcodeTags()
@@ -302,6 +219,8 @@ class WordPressWrapper
   }
 
   /**
+   * Getter for global $wp_theme_directories
+   *
    * @return mixed
    */
   public function getThemeDirectories()
@@ -310,6 +229,11 @@ class WordPressWrapper
     return $wp_theme_directories;
   }
 
+  /**
+   * Getter for global $wp_themes
+   *
+   * @return mixed
+   */
   public function getThemes()
   {
     global $wp_themes;
@@ -317,6 +241,8 @@ class WordPressWrapper
   }
 
   /**
+   * Getter for global $wp_locale
+   *
    * @return mixed
    */
   public function getLocale()
@@ -326,53 +252,63 @@ class WordPressWrapper
   }
 
   /**
+   * Getter $menu
+   *
    * @return array|bool|mixed|string|void
    */
   public function getMenu()
   {
     global $menu;
-    $this->menu = $menu;
     return $menu;
   }
 
+  /**
+   * Setter for global $menu
+   *
+   * @param $newMenu
+   */
   public function setMenu($newMenu)
   {
     global $menu;
-    $this->menu = $newMenu;
     $menu = $newMenu;
   }
 
   /**
+   * Getter for global $submenu_file
+   *
    * @return string
    */
   public function getSubMenuFile()
   {
     global $submenu_file;
-    $this->subMenuFile = $submenu_file;
     return $submenu_file;
   }
 
   /**
+   * Getter for global $submenu
+   *
    * @return array
    */
   public function getSubMenu()
   {
     global $submenu;
-    $this->subMenu = $submenu;
     return $submenu;
   }
 
   /**
+   * Setter for global $submenu
+   *
    * @param array $newSubbMenu
    */
   public function setSubMenu($newSubbMenu = array())
   {
     global $submenu;
-    $this->subMenu = $newSubbMenu;
     $submenu = $newSubbMenu;
   }
 
   /**
+   * Setter for global $submenu_file
+   *
    * @param string $file
    */
   public function setSubMenuFile($file)
@@ -382,6 +318,8 @@ class WordPressWrapper
   }
 
   /**
+   * Getter for global $wp_scripts
+   *
    * @return WP_Scripts
    */
   public function getScripts()
@@ -391,6 +329,8 @@ class WordPressWrapper
   }
 
   /**
+   * Getter for global $wp_styles
+   *
    * @return WP_Styles
    */
   public function getStyles()
@@ -400,6 +340,8 @@ class WordPressWrapper
   }
 
   /**
+   * Getter for global $l10n
+   *
    * @return mixed
    */
   public function getl10n()
@@ -409,6 +351,8 @@ class WordPressWrapper
   }
 
   /**
+   * Getter for global $$wp_registered_widgets
+   *
    * @return array
    */
   public function getWidgets()
@@ -418,6 +362,8 @@ class WordPressWrapper
   }
 
   /**
+   * Getter for global $wp_registered_sidebars
+   *
    * @return array
    */
   public function getSidebars()
@@ -427,7 +373,9 @@ class WordPressWrapper
   }
 
   /**
-   * @return \WP_Widget_Factory
+   * Getter for global $wp_widget_factory
+   *
+   * @return WP_Widget_Factory
    */
   public function getWidgetFactory()
   {
